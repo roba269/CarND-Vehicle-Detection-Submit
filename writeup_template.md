@@ -17,7 +17,9 @@ The goals / steps of this project are the following:
 [scale1]: ./examples/scale1.png
 [scale2]: ./examples/scale2.png
 [find_car_windows]: ./examples/find_car_windows.png
-[image7]: ./examples/output_bboxes.png
+[step1]: ./examples/step1.png
+[step2]: ./examples/step2.png
+[step3]: ./examples/step3.png
 [video1]: ./project_video.mp4
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
@@ -96,21 +98,25 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected. The corresponding code is in Cell #x of the notebook.
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+Here's an example result showing the heatmap from a frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
-### Here are six frames and their corresponding heatmaps:
+### Here is one frame and its corresponding heatmap:
 
-![alt text][image5]
+![alt text][step1]
 
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
+### Here is the output of `scipy.ndimage.measurements.label()` on the heatmap:
+![alt text][step2]
 
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+### Here the resulting bounding boxes:
+![alt text][step3]
 
+To eliminate the jiggle between frames, I used a "smoothing" apporach - basically accumulate the heatmap of multiple recent frames.
 
+Besides heatmap, I also used two another heuristic apporaches to filter out the false positive:
+1) Set xstart and xstop range, to make sure the scanning range only contains the road lanes only.
+2) Filter out the boxes with invalid width / height ratio (The bounding boxes should be rectanges not too far away from square).
 
 ---
 
