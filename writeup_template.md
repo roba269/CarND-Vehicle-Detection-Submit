@@ -13,10 +13,10 @@ The goals / steps of this project are the following:
 [car]: ./examples/car.png
 [notcar]: ./examples/notcar.png
 [hog]: ./examples/hog.png
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
-[image6]: ./examples/labels_map.png
+[sliding]: ./examples/sliding.png
+[scale1]: ./examples/scale1.png
+[scale2]: ./examples/scale2.png
+[find_car_windows]: ./examples/find_car_windows.png
 [image7]: ./examples/output_bboxes.png
 [video1]: ./project_video.mp4
 
@@ -66,15 +66,26 @@ I trained a linear SVM with default parameters of sklearn library. (Cell #9 in t
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+I mostly adpated the `find_car()` function in the course material, with a small modification to support xstart/xstop range. See the code in Cell #x in the notebook.
 
-![alt text][image3]
+Specifically, I chose two different scales with 50% overlap:
+1) 0.75, which is used for detecting the far-away cars
+3) 1.5, which is used for general scanning of the whole range
+
+I chose these scales mostly by trial-and-error. Based on my experient, this combination can provide acceptable accuracy.
+
+Below are the windows for two scales:
+
+![alt text][scale1]
+![alt text][scale2]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+The straight-forward sliding window implementation will be slow, because of a lot of duplicated HOG calculation. The speed optimization is to calucate all the HOG features in one batch, as in the function `find_car()`.
 
-![alt text][image4]
+Ultimately I searched on two scales using the L-channel of LUV colorspace HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. Here are some example images:
+
+![alt text][find_car_windows]
 ---
 
 ### Video Implementation
