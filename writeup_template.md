@@ -12,7 +12,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 [car]: ./examples/car.png
 [notcar]: ./examples/notcar.png
-[image2]: ./examples/HOG_example.jpg
+[hog]: ./examples/hog.png
 [image3]: ./examples/sliding_windows.jpg
 [image4]: ./examples/sliding_window.jpg
 [image5]: ./examples/bboxes_and_heat.png
@@ -39,25 +39,28 @@ The code for this step is contained in the #1 - #8 cells of the IPython notebook
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
 Vehicle:
+
 ![alt text][car]
 
 Non-vehicle:
+
 ![alt_text][notcar]
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is an example using the first channel of `RGB` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
-
-![alt text][image2]
+![alt text][hog]
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and picked one based on the performance of SVM classifier. The final paramters chosen were: 
+I tried various combinations of parameters, for example, `LUV`/`YUV`/`RGB` for color space, different number of orient, different number of pix_per_cell, cell_per_block. Finally I picked the best one based on the performance of SVM classifier. 
+
+The final paramters chosen were: color space = `LUV`, orient = 8, pix_per_cell = 8, cell_per_block = 8. And also, I chose spatial_size = (16,16) for spatial color features, and number_of_histogram_bins = 32 for color histogram features.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM with default parameters of sklearn library. (Cell #9 in the notebook) I used HOG features mentioned above, and also spatial intensity and channel intensity histogram features.
+I trained a linear SVM with default parameters of sklearn library. (Cell #9 in the notebook) I used HOG features mentioned above, and also spatial intensity and channel intensity histogram features. The final accuracy on test data is 0.9865.
 
 ### Sliding Window Search
 
